@@ -1,18 +1,18 @@
 # Buliding Return Model
-bitc = read.csv("bitc.csv", header = T, stringsAsFactors = F)
+bitc = read.csv("Data\\bitc.csv", header = T, stringsAsFactors = F)
 bitc_prices <- bitc["close", drop = FALSE]
 n <- nrow(bitc_prices)
 price_ret <- ((bitc_prices[2:n, 1] - bitc_prices[1:(n-1), 1])/bitc_prices[1:(n-1), 1])
 price_ret
 
 #Create Time-Series object and plot based on zoo function
-price_ret_zoo = zoo(price_ret, as.Date(as.character(bitc$date), format = "%m/%d/%Y"))
+price_ret_zoo = zoo::zoo(price_ret, as.Date(as.character(bitc$date), format = "%m/%d/%Y"))
 par(mfcol=c(2,2))
 plot(price_ret_zoo)
 
 #Histogram
 hist(price_ret_zoo, xlab = "Price", prob = TRUE, main = "Histogram")
-xfit = seq(min(price_ret_zoo), max(price_ret_zoo))
+xfit = seq(min(price_ret_zoo), max(price_ret_zoo), length = 1793)
 yfit = dnorm(xfit, mean = mean(price_ret_zoo), sd = sd(price_ret_zoo))
 lines(xfit, yfit, col = "blue")
 
@@ -23,6 +23,31 @@ qqline(price_ret_zoo, col =2)
 # Normality Test
 normalTest(price_ret_zoo, method = c("jb"))
 
-## ACF Plot
-acf_values = acf(price_ret_zoo, plot = T, lag = 20)
+# ACF Plot
+acf_values = acf(price_ret_zoo, plot = T, lag = 50)
 acf_values
+
+# PACF
+pacf(price_ret_zoo, plot = T, lag = 50)
+
+# Ljung Box Test
+Box.test(price_ret_zoo, lag = 30, type = "Ljung")
+
+
+############## LOG RETURN #################
+
+lnReturn = log(price_ret)
+logReturn = log10(price_ret)
+
+plot(price_ret_zoo)
+
+price_lnReturn_zoo = zoo::zoo(zoo::coredata(lnReturn), as.Date(as.character(bitc$date), format = "%m/%d/%Y"))
+plot(zoo::coredata(price_lnReturn_zoo))
+
+price_logReturn_zoo = zoo::zoo(zoo::coredata(logReturn), as.Date(as.character(bitc$date), format = "%m/%d/%Y"))
+plot(zoo::coredata(price_logReturn_zoo))
+
+
+
+
+
