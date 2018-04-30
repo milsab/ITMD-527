@@ -1,8 +1,19 @@
 # Divide display to 4 sections
 par(mfcol=c(2,2))
 
+#
+n = nrow(price)
+price
+
 #Make return values
 simpleReturn = returns(price)
+simpleReturn = 
+
+# Make return value based on time-series object
+returnts = returns(pricets)
+
+#Make differencing
+price_d = diff(pricets)
 
 #Make Log return values
 logReturn = log(zoo::coredata(simpleReturn))
@@ -36,20 +47,20 @@ pricets_logReturn_ts = ts(logReturn, start = c(2013, 8), freq = 1)
 plot(pricets_logReturn_ts)
 
 #Histogram
-hist(zoo::coredata(pricets_logReturn_ts), xlab = "Price", prob = TRUE, main = "Histogram")
-xfit = seq(min(zoo::coredata(pricets_logReturn_ts)), max(zoo::coredata(pricets_logReturn_ts)))
-yfit = dnorm(xfit, mean = mean(zoo::coredata(pricets_logReturn_ts)), sd = sd(zoo::coredata(pricets_logReturn_ts)))
+hist(zoo::coredata(returnts), xlab = "Price", prob = TRUE, main = "Histogram")
+xfit = seq(min(pricets_return_ts, na.rm=TRUE), max(pricets_return_ts, na.rm=TRUE), length = 40)
+yfit = dnorm(xfit, mean = mean(pricets_return_ts, na.rm=TRUE), sd = sd(pricets_return_ts, na.rm=TRUE))
 lines(xfit, yfit, col = "blue", lwd = 2)
 
 # Q-Q Plot
-qqnorm(simpleReturn)
-qqline(simpleReturn, col =2)
+qqnorm(pricets_return_zoo)
+qqline(pricets_return_zoo, col =2)
 
 # Normality Test
 normalTest(simpleReturn, method = c("jb"))
 
 # ACF Plot
-acf_values = acf(pricets_return_ts, plot = T, lag = 20)
+acf_values = acf(zoo::coredata(pricets_return_zoo), plot = T, lag = 20)
 acf_values
 
 # PACF Plot
@@ -58,4 +69,9 @@ pacf(zoo::coredata(pricets_return_zoo), lag = 20)
 # Ljung Box Test
 Box.test(pricets_return_zoo, lag = 30, type = "Ljung")
 
+# Model
+arima = auto.arima(pricets_return_zoo, max.p = 20, max.q = 20, ic = c("aic"))
 
+# Prediction
+predict(arima, n.head = 100, se.fit = T)
+accuracy(forecast(arima), te)
