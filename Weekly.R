@@ -8,15 +8,18 @@ price_sqrt_zoo = zoo::zoo(w_sqrt, as.Date(as.character(bitc$date), format = "%m/
 n = nrow(bitc_prices)
 w_ret = ((bitc_prices[2:n, 1] - bitc_prices[1:(n-1), 1])/bitc_prices[1:(n-1), 1]) 
 w_price_ret_zoo = zoo::zoo(w_ret, as.Date(as.character(bitc$date), format = "%m/%d/%Y"))
+w_price_zoo = zoo::zoo(bitc_prices, as.Date(as.character(bitc$date), format = "%m/%d/%Y"))
 
 wdata = as.xts(w_price_ret_zoo)
-
+wdata_nonst = as.xts(w_price_zoo)
 
 montlyData = apply.monthly(as.xts(wdata),FUN=mean)
 weeklyData = apply.weekly(as.xts(wdata),FUN=mean)
+weeklyData_nonst = apply.weekly(as.xts(wdata_nonst),FUN=mean)
 
 #
 plot(weeklyData)
+plot(weeklyData_nonst)
 par(mfcol=c(2,1))
 
 # Histogram
@@ -33,11 +36,11 @@ qqline(weeklyData, col =2)
 normalTest(weeklyData, method = c("jb"))
 
 # ACF Plot
-acf_values = acf(weeklyData, plot = T, lag = 30)
+acf_values = acf(weeklyData, plot = T, lag = 15)
 acf_values
 
 # PACF
-pacf(weeklyData, plot = T, lag = 30)
+pacf(weeklyData, plot = T, lag = 15)
 
 # Ljung Box Test
 Box.test(weeklyData, lag = 30, type = "Ljung")
@@ -47,15 +50,24 @@ Box.test(weeklyData, lag = 30, type = "Ljung")
 # auto Arima model
 auto_arima = auto.arima(weeklyData, max.p = 30, max.q = 30, ic = "aic")
 
+# auto arima on non-stationary data
+auto_arima_nonst = auto.arima(weeklyData_nonst, max.p = 30, max.q = 30, ic = "aic")
+
 # AR model
-AR=arima(weeklyData, order = c(29,0,0))
+AR=arima(weeklyData, order = c(7,0,0))
 
 # MR model
-MR=arima(weeklyData, order = c(0,0,29))
+MA=arima(weeklyData, order = c(0,0,2))
 
 # ARIMA model
-ARMA=arima(weeklyData, order = c(29,0,29))
+ARMA=arima(weeklyData, order = c(7,0,2))
 
+
+plot(forecast(AR, 12), include=36)
+plot(forecast(MA, 12), include=36)
+plot(forecast(ARMA, 12), include=36)
+plot(forecast(auto_arima, 12), include=36)
+plot(forecast(auto_arima_nonst, 12), include=36)
 
 ############ EVALUATION ###########
 
@@ -63,11 +75,167 @@ ARMA=arima(weeklyData, order = c(29,0,29))
 train.data = weeklyData[1:205, ]
 test.data = weeklyData[206:257, ]
 
-plot(forecast(auto_arima, 12), include=36)
-plot(forecast(AR, 12), include=36)
-plot(forecast(MR, 12), include=36)
-plot(forecast(ARMA, 12), include=36)
-
 accuracy(forecast(AR, 50), test.data)
 
+# %96 - %4
+train.data = weeklyData[1:247, ]
+test.data = weeklyData[248:257, ]
+#####################################
+#------------------------- Fold = 1 ---------------------------------
+# 
+train1 = weeklyData[1:217, ]
+test1 = weeklyData[218:225, ]
+
+# auto Arima model
+auto_arima1 = auto.arima(train1, max.p = 30, max.q = 30, ic = "aic")
+
+# auto arima on non-stationary data
+#auto_arima_nonst = auto.arima(weeklyData_nonst, max.p = 30, max.q = 30, ic = "aic")
+
+# AR model
+AR1=arima(train1, order = c(7,0,0))
+
+# MR model
+MA1=arima(train1, order = c(0,0,2))
+
+# ARIMA model
+ARMA1=arima(train1, order = c(7,0,2))
+
+accuracy(forecast(AR1, 50), test1)
+accuracy(forecast(MA1, 50), test1)
+accuracy(forecast(ARMA1, 50), test1)
+accuracy(forecast(auto_arima1, 50), test1)
+
+#----------------------------- Fold = 2 -----------------------------
+# Fold = 2
+train2 = weeklyData[9:225, ]
+test2 = weeklyData[226:233, ]
+
+# auto Arima model
+auto_arima2 = auto.arima(train2, max.p = 30, max.q = 30, ic = "aic")
+
+# auto arima on non-stationary data
+#auto_arima_nonst = auto.arima(weeklyData_nonst, max.p = 30, max.q = 30, ic = "aic")
+
+# AR model
+AR2=arima(train2, order = c(7,0,0))
+
+# MR model
+MA2=arima(train2, order = c(0,0,2))
+
+# ARIMA model
+ARMA2=arima(train2, order = c(7,0,2))
+
+accuracy(forecast(AR2, 50), test2)
+accuracy(forecast(MA2, 50), test2)
+accuracy(forecast(ARMA2, 50), test2)
+accuracy(forecast(auto_arima2, 50), test2)
+
+#----------------------------- Fold = 3 ---------------------------
+# Fold = 3
+train3 = weeklyData[17:233, ]
+test3 = weeklyData[234:241, ]
+
+# auto Arima model
+auto_arima3 = auto.arima(train3, max.p = 30, max.q = 30, ic = "aic")
+
+# auto arima on non-stationary data
+#auto_arima_nonst = auto.arima(weeklyData_nonst, max.p = 30, max.q = 30, ic = "aic")
+
+# AR model
+AR3=arima(train3, order = c(7,0,0))
+
+# MR model
+MA3=arima(train3, order = c(0,0,2))
+
+# ARIMA model
+ARMA3=arima(train3, order = c(7,0,2))
+
+accuracy(forecast(AR3, 50), test3)
+accuracy(forecast(MA3, 50), test3)
+accuracy(forecast(ARMA3, 50), test3)
+accuracy(forecast(auto_arima3, 50), test3)
+
+#----------------------------- Fold = 4 -------------------------
+# Fold = 4
+train4 = weeklyData[25:241, ]
+test4 = weeklyData[242:249, ]
+
+# auto Arima model
+auto_arima4 = auto.arima(train4, max.p = 30, max.q = 30, ic = "aic")
+
+# auto arima on non-stationary data
+#auto_arima_nonst = auto.arima(weeklyData_nonst, max.p = 30, max.q = 30, ic = "aic")
+
+# AR model
+AR4=arima(train4, order = c(7,0,0))
+
+# MR model
+MA4=arima(train4, order = c(0,0,2))
+
+# ARIMA model
+ARMA4=arima(train4, order = c(7,0,2))
+
+accuracy(forecast(AR4, 50), test4)
+accuracy(forecast(MA4, 50), test4)
+accuracy(forecast(ARMA4, 50), test4)
+accuracy(forecast(auto_arima4, 50), test4)
+
+#----------------------------------------------------------
+# Fold = 5
+train5 = weeklyData[33:249, ]
+test5 = weeklyData[250:257, ]
+
+# auto Arima model
+auto_arima5 = auto.arima(train5, max.p = 30, max.q = 30, ic = "aic")
+
+# auto arima on non-stationary data
+#auto_arima_nonst = auto.arima(weeklyData_nonst, max.p = 30, max.q = 30, ic = "aic")
+
+# AR model
+AR5=arima(train5, order = c(7,0,0))
+
+# MR model
+MA5=arima(train5, order = c(0,0,2))
+
+# ARIMA model
+ARMA5=arima(train5, order = c(7,0,2))
+
+accuracy(forecast(AR5, 50), test5)
+accuracy(forecast(MA5, 50), test5)
+accuracy(forecast(ARMA5, 50), test5)
+accuracy(forecast(auto_arima5, 50), test5)
+
+#------------------ MEAN of MAE --------------------
+# AR
+ar_acc1 = accuracy(forecast(AR1, 50), test5)
+ar_acc2 = accuracy(forecast(AR2, 50), test5)
+ar_acc3 = accuracy(forecast(AR3, 50), test5)
+ar_acc4 = accuracy(forecast(AR4, 50), test5)
+ar_acc5 = accuracy(forecast(AR5, 50), test5)
+ar_acc_mean = ( ar_acc1[, "MAE"] + ar_acc2[, "MAE"] + ar_acc3[, "MAE"] + ar_acc4[, "MAE"] + ar_acc5[, "MAE"] ) / 5
+
+# MA
+ma_acc1 = accuracy(forecast(MA1, 50), test5)
+ma_acc2 = accuracy(forecast(MA2, 50), test5)
+ma_acc3 = accuracy(forecast(MA3, 50), test5)
+ma_acc4 = accuracy(forecast(MA4, 50), test5)
+ma_acc5 = accuracy(forecast(MA5, 50), test5)
+ma_acc_mean = ( ma_acc1[, "MAE"] + ma_acc2[, "MAE"] + ma_acc3[, "MAE"] + ma_acc4[, "MAE"] + ma_acc5[, "MAE"] ) / 5
+
+# ARMA
+arma_acc1 = accuracy(forecast(ARMA1, 50), test5)
+arma_acc2 = accuracy(forecast(ARMA2, 50), test5)
+arma_acc3 = accuracy(forecast(ARMA3, 50), test5)
+arma_acc4 = accuracy(forecast(ARMA4, 50), test5)
+arma_acc5 = accuracy(forecast(ARMA5, 50), test5)
+arma_acc_mean = ( arma_acc1[, "MAE"] + arma_acc2[, "MAE"] + arma_acc3[, "MAE"] + arma_acc4[, "MAE"] + arma_acc5[, "MAE"] ) / 5
+
+# auto arima
+auto_arima_acc1 = accuracy(forecast(auto_arima1, 50), test5)
+auto_arima_acc2 = accuracy(forecast(auto_arima2, 50), test5)
+auto_arima_acc3 = accuracy(forecast(auto_arima3, 50), test5)
+auto_arima_acc4 = accuracy(forecast(auto_arima4, 50), test5)
+auto_arima_acc5 = accuracy(forecast(auto_arima5, 50), test5)
+auto_arima_acc_mean = ( auto_arima_acc1[, "MAE"] + auto_arima_acc2[, "MAE"] + auto_arima_acc3[, "MAE"] + auto_arima_acc4[, "MAE"] + auto_arima_acc5[, "MAE"] ) / 5
 
