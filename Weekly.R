@@ -35,12 +35,7 @@ qqline(weeklyData, col =2)
 # Normality Test
 normalTest(weeklyData, method = c("jb"))
 
-# ACF Plot
-acf_values = acf(weeklyData, plot = T, lag = 15)
-acf_values
-
-# PACF
-pacf(weeklyData, plot = T, lag = 15)
+S
 
 # Ljung Box Test
 Box.test(weeklyData, lag = 30, type = "Ljung")
@@ -62,12 +57,11 @@ MA=arima(weeklyData, order = c(0,0,2))
 # ARIMA model
 ARMA=arima(weeklyData, order = c(7,0,2))
 
-
-plot(forecast(AR, 12), include=36)
-plot(forecast(MA, 12), include=36)
-plot(forecast(ARMA, 12), include=36)
-plot(forecast(auto_arima, 12), include=36)
-plot(forecast(auto_arima_nonst, 12), include=36)
+plot(forecast(AR, 8), include=36)
+plot(forecast(MA, 8), include=36)
+plot(forecast(ARMA, 8), include=36)
+plot(forecast(auto_arima, 8), include=36)
+plot(forecast(auto_arima_nonst, 8), include=36)
 
 ############ EVALUATION ###########
 
@@ -101,10 +95,10 @@ MA1=arima(train1, order = c(0,0,2))
 # ARIMA model
 ARMA1=arima(train1, order = c(7,0,2))
 
-accuracy(forecast(AR1, 50), test1)
-accuracy(forecast(MA1, 50), test1)
-accuracy(forecast(ARMA1, 50), test1)
-accuracy(forecast(auto_arima1, 50), test1)
+accuracy(forecast(AR1, 8), test1)
+accuracy(forecast(MA1, 8), test1)
+accuracy(forecast(ARMA1, 8), test1)
+accuracy(forecast(auto_arima1, 8), test1)
 
 #----------------------------- Fold = 2 -----------------------------
 # Fold = 2
@@ -126,10 +120,10 @@ MA2=arima(train2, order = c(0,0,2))
 # ARIMA model
 ARMA2=arima(train2, order = c(7,0,2))
 
-accuracy(forecast(AR2, 50), test2)
-accuracy(forecast(MA2, 50), test2)
-accuracy(forecast(ARMA2, 50), test2)
-accuracy(forecast(auto_arima2, 50), test2)
+accuracy(forecast(AR2, 8), test2)
+accuracy(forecast(MA2, 8), test2)
+accuracy(forecast(ARMA2, 8), test2)
+accuracy(forecast(auto_arima2, 8), test2)
 
 #----------------------------- Fold = 3 ---------------------------
 # Fold = 3
@@ -151,10 +145,10 @@ MA3=arima(train3, order = c(0,0,2))
 # ARIMA model
 ARMA3=arima(train3, order = c(7,0,2))
 
-accuracy(forecast(AR3, 50), test3)
-accuracy(forecast(MA3, 50), test3)
-accuracy(forecast(ARMA3, 50), test3)
-accuracy(forecast(auto_arima3, 50), test3)
+accuracy(forecast(AR3, 8), test3)
+accuracy(forecast(MA3, 8), test3)
+accuracy(forecast(ARMA3, 8), test3)
+accuracy(forecast(auto_arima3, 8), test3)
 
 #----------------------------- Fold = 4 -------------------------
 # Fold = 4
@@ -176,10 +170,10 @@ MA4=arima(train4, order = c(0,0,2))
 # ARIMA model
 ARMA4=arima(train4, order = c(7,0,2))
 
-accuracy(forecast(AR4, 50), test4)
-accuracy(forecast(MA4, 50), test4)
-accuracy(forecast(ARMA4, 50), test4)
-accuracy(forecast(auto_arima4, 50), test4)
+accuracy(forecast(AR4, 8), test4)
+accuracy(forecast(MA4, 8), test4)
+accuracy(forecast(ARMA4, 8), test4)
+accuracy(forecast(auto_arima4, 8), test4)
 
 #----------------------------------------------------------
 # Fold = 5
@@ -201,41 +195,45 @@ MA5=arima(train5, order = c(0,0,2))
 # ARIMA model
 ARMA5=arima(train5, order = c(7,0,2))
 
-accuracy(forecast(AR5, 50), test5)
-accuracy(forecast(MA5, 50), test5)
-accuracy(forecast(ARMA5, 50), test5)
-accuracy(forecast(auto_arima5, 50), test5)
+accuracy(forecast(AR5, 8), test5)
+accuracy(forecast(MA5, 8), test5)
+accuracy(forecast(ARMA5, 8), test5)
+accuracy(forecast(auto_arima5, 8), test5)
 
 #------------------ MEAN of MAE --------------------
 # AR
-ar_acc1 = accuracy(forecast(AR1, 50), test5)
-ar_acc2 = accuracy(forecast(AR2, 50), test5)
-ar_acc3 = accuracy(forecast(AR3, 50), test5)
-ar_acc4 = accuracy(forecast(AR4, 50), test5)
-ar_acc5 = accuracy(forecast(AR5, 50), test5)
+ar_acc1 = accuracy(forecast(AR1, 8), test5)
+ar_acc2 = accuracy(forecast(AR2, 8), test5)
+ar_acc3 = accuracy(forecast(AR3, 8), test5)
+ar_acc4 = accuracy(forecast(AR4, 8), test5)
+ar_acc5 = accuracy(forecast(AR5, 8), test5)
 ar_acc_mean = ( ar_acc1[, "MAE"] + ar_acc2[, "MAE"] + ar_acc3[, "MAE"] + ar_acc4[, "MAE"] + ar_acc5[, "MAE"] ) / 5
 
 # MA
-ma_acc1 = accuracy(forecast(MA1, 50), test5)
-ma_acc2 = accuracy(forecast(MA2, 50), test5)
-ma_acc3 = accuracy(forecast(MA3, 50), test5)
-ma_acc4 = accuracy(forecast(MA4, 50), test5)
-ma_acc5 = accuracy(forecast(MA5, 50), test5)
+ma_acc1 = accuracy(forecast(MA1, 8), test5)
+ma_acc2 = accuracy(forecast(MA2, 8), test5)
+ma_acc3 = accuracy(forecast(MA3, 8), test5)
+ma_acc4 = accuracy(forecast(MA4, 8), test5)
+ma_acc5 = accuracy(forecast(MA5, 8), test5)
 ma_acc_mean = ( ma_acc1[, "MAE"] + ma_acc2[, "MAE"] + ma_acc3[, "MAE"] + ma_acc4[, "MAE"] + ma_acc5[, "MAE"] ) / 5
 
 # ARMA
-arma_acc1 = accuracy(forecast(ARMA1, 50), test5)
-arma_acc2 = accuracy(forecast(ARMA2, 50), test5)
-arma_acc3 = accuracy(forecast(ARMA3, 50), test5)
-arma_acc4 = accuracy(forecast(ARMA4, 50), test5)
-arma_acc5 = accuracy(forecast(ARMA5, 50), test5)
+arma_acc1 = accuracy(forecast(ARMA1, 8), test5)
+arma_acc2 = accuracy(forecast(ARMA2, 8), test5)
+arma_acc3 = accuracy(forecast(ARMA3, 8), test5)
+arma_acc4 = accuracy(forecast(ARMA4, 8), test5)
+arma_acc5 = accuracy(forecast(ARMA5, 8), test5)
 arma_acc_mean = ( arma_acc1[, "MAE"] + arma_acc2[, "MAE"] + arma_acc3[, "MAE"] + arma_acc4[, "MAE"] + arma_acc5[, "MAE"] ) / 5
 
 # auto arima
-auto_arima_acc1 = accuracy(forecast(auto_arima1, 50), test5)
-auto_arima_acc2 = accuracy(forecast(auto_arima2, 50), test5)
-auto_arima_acc3 = accuracy(forecast(auto_arima3, 50), test5)
-auto_arima_acc4 = accuracy(forecast(auto_arima4, 50), test5)
-auto_arima_acc5 = accuracy(forecast(auto_arima5, 50), test5)
+auto_arima_acc1 = accuracy(forecast(auto_arima1, 8), test5)
+auto_arima_acc2 = accuracy(forecast(auto_arima2, 8), test5)
+auto_arima_acc3 = accuracy(forecast(auto_arima3, 8), test5)
+auto_arima_acc4 = accuracy(forecast(auto_arima4, 8), test5)
+auto_arima_acc5 = accuracy(forecast(auto_arima5, 8), test5)
 auto_arima_acc_mean = ( auto_arima_acc1[, "MAE"] + auto_arima_acc2[, "MAE"] + auto_arima_acc3[, "MAE"] + auto_arima_acc4[, "MAE"] + auto_arima_acc5[, "MAE"] ) / 5
 
+ar_acc_mean
+ma_acc_mean
+arma_acc_mean
+auto_arima_acc_mean
