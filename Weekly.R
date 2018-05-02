@@ -57,9 +57,13 @@ MA=arima(weeklyData, order = c(0,0,2))
 # ARIMA model
 ARMA=arima(weeklyData, order = c(7,0,2))
 
+# ARMA_EACF model
+ARMA_EACF = arima(weeklyData, order = c(1,0,2))
+
 plot(forecast(AR, 8), include=36)
 plot(forecast(MA, 8), include=36)
 plot(forecast(ARMA, 8), include=36)
+plot(forecast(ARMA_EACF, 8), include=36)
 plot(forecast(auto_arima, 8), include=36)
 plot(forecast(auto_arima_nonst, 8), include=36)
 
@@ -223,6 +227,9 @@ arma_acc2 = accuracy(forecast(ARMA2, 8), test5)
 arma_acc3 = accuracy(forecast(ARMA3, 8), test5)
 arma_acc4 = accuracy(forecast(ARMA4, 8), test5)
 arma_acc5 = accuracy(forecast(ARMA5, 8), test5)
+#***
+accuracy(predict(ARMA5, n.ahead = 8, se.fit = T))
+#***
 arma_acc_mean = ( arma_acc1[, "MAE"] + arma_acc2[, "MAE"] + arma_acc3[, "MAE"] + arma_acc4[, "MAE"] + arma_acc5[, "MAE"] ) / 5
 
 # auto arima
