@@ -21,6 +21,8 @@ weeklyData_nonst = apply.weekly(as.xts(wdata_nonst),FUN=mean)
 plot(weeklyData)
 plot(weeklyData_nonst)
 par(mfcol=c(2,1))
+acf(weeklyData, lag=12)
+pacf(weeklyData, lag=12)
 
 # Histogram
 hist(weeklyData, xlab = "Price", prob = TRUE, main = "Histogram")
@@ -33,17 +35,17 @@ qqnorm(weeklyData)
 qqline(weeklyData, col =2)
 
 # Normality Test
-normalTest(weeklyData, method = c("jb"))
+library(fBasics)
 
-S
+
 
 # Ljung Box Test
-Box.test(weeklyData, lag = 30, type = "Ljung")
+Box.test(weeklyData, lag = 5, type = "Ljung")
 
 ############### MAKING TEH MODEL ###############
 
 # auto Arima model
-auto_arima = auto.arima(weeklyData, max.p = 30, max.q = 30, ic = "aic")
+auto_arima = auto.arima(weeklyData, max.p = 12, max.q = 12, ic = "aic")
 
 # auto arima on non-stationary data
 auto_arima_nonst = auto.arima(weeklyData_nonst, max.p = 30, max.q = 30, ic = "aic")
@@ -148,6 +150,9 @@ MA3=arima(train3, order = c(0,0,2))
 
 # ARIMA model
 ARMA3=arima(train3, order = c(7,0,2))
+
+# auto Arima model
+auto_arima3 = auto.arima(train3, max.p = 30, max.q = 30, ic = "aic")
 
 accuracy(forecast(AR3, 8), test3)
 accuracy(forecast(MA3, 8), test3)
