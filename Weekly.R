@@ -18,9 +18,16 @@ weeklyData = apply.weekly(as.xts(wdata),FUN=mean)
 weeklyData_nonst = apply.weekly(as.xts(wdata_nonst),FUN=mean)
 
 #
-plot(weeklyData)
+plot(weeklyData, xlab="", ylab="", main="Weekly ")
 plot(weeklyData_nonst)
 par(mfcol=c(2,1))
+
+## ACF Plot
+acf_values = acf(weeklyData, plot = T, lag = 20)
+acf_values
+
+# PACF Plot
+pacf(weeklyData, plot = T, lag = 20)
 
 # Histogram
 hist(weeklyData, xlab = "Price", prob = TRUE, main = "Histogram")
@@ -35,7 +42,7 @@ qqline(weeklyData, col =2)
 # Normality Test
 normalTest(weeklyData, method = c("jb"))
 
-S
+
 
 # Ljung Box Test
 Box.test(weeklyData, lag = 30, type = "Ljung")
