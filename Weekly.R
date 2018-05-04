@@ -101,10 +101,14 @@ MA1=arima(train1, order = c(0,0,2))
 # ARIMA model
 ARMA1=arima(train1, order = c(7,0,2))
 
+#ARMA_EACF
+ARMA_EACF1 = arima(train1, order = c(1,0,2))
+
 accuracy(forecast(AR1, 8), test1)
 accuracy(forecast(MA1, 8), test1)
 accuracy(forecast(ARMA1, 8), test1)
 accuracy(forecast(auto_arima1, 8), test1)
+accuracy(forecast(ARMA_EACF1, 8), test1)
 
 #----------------------------- Fold = 2 -----------------------------
 # Fold = 2
@@ -126,21 +130,19 @@ MA2=arima(train2, order = c(0,0,2))
 # ARIMA model
 ARMA2=arima(train2, order = c(7,0,2))
 
+#ARMA_EACF
+ARMA_EACF2 = arima(train2, order = c(1,0,2))
+
 accuracy(forecast(AR2, 8), test2)
 accuracy(forecast(MA2, 8), test2)
 accuracy(forecast(ARMA2, 8), test2)
 accuracy(forecast(auto_arima2, 8), test2)
+accuracy(forecast(ARMA_EACF2, 8), test2)
 
 #----------------------------- Fold = 3 ---------------------------
 # Fold = 3
 train3 = weeklyData[17:233, ]
 test3 = weeklyData[234:241, ]
-
-# auto Arima model
-auto_arima3 = auto.arima(train3, max.p = 30, max.q = 30, ic = "aic")
-
-# auto arima on non-stationary data
-#auto_arima_nonst = auto.arima(weeklyData_nonst, max.p = 30, max.q = 30, ic = "aic")
 
 # AR model
 AR3=arima(train3, order = c(7,0,0))
@@ -154,10 +156,14 @@ ARMA3=arima(train3, order = c(7,0,2))
 # auto Arima model
 auto_arima3 = auto.arima(train3, max.p = 30, max.q = 30, ic = "aic")
 
+#ARMA_EACF
+ARMA_EACF3 = arima(train3, order = c(1,0,2))
+
 accuracy(forecast(AR3, 8), test3)
 accuracy(forecast(MA3, 8), test3)
 accuracy(forecast(ARMA3, 8), test3)
 accuracy(forecast(auto_arima3, 8), test3)
+accuracy(forecast(ARMA_EACF3, 8), test3)
 
 #----------------------------- Fold = 4 -------------------------
 # Fold = 4
@@ -179,10 +185,14 @@ MA4=arima(train4, order = c(0,0,2))
 # ARIMA model
 ARMA4=arima(train4, order = c(7,0,2))
 
+#ARMA_EACF
+ARMA_EACF4 = arima(train4, order = c(1,0,2))
+
 accuracy(forecast(AR4, 8), test4)
 accuracy(forecast(MA4, 8), test4)
 accuracy(forecast(ARMA4, 8), test4)
 accuracy(forecast(auto_arima4, 8), test4)
+accuracy(forecast(ARMA_EACF4, 8), test4)
 
 #----------------------------------------------------------
 # Fold = 5
@@ -204,10 +214,14 @@ MA5=arima(train5, order = c(0,0,2))
 # ARIMA model
 ARMA5=arima(train5, order = c(7,0,2))
 
+#ARMA_EACF
+ARMA_EACF5 = arima(train5, order = c(1,0,2))
+
 accuracy(forecast(AR5, 8), test5)
 accuracy(forecast(MA5, 8), test5)
 accuracy(forecast(ARMA5, 8), test5)
 accuracy(forecast(auto_arima5, 8), test5)
+accuracy(forecast(ARMA_EACF5, 8), test5)
 
 #------------------ MEAN of MAE --------------------
 # AR
@@ -245,7 +259,17 @@ auto_arima_acc4 = accuracy(forecast(auto_arima4, 8), test5)
 auto_arima_acc5 = accuracy(forecast(auto_arima5, 8), test5)
 auto_arima_acc_mean = ( auto_arima_acc1[, "MAE"] + auto_arima_acc2[, "MAE"] + auto_arima_acc3[, "MAE"] + auto_arima_acc4[, "MAE"] + auto_arima_acc5[, "MAE"] ) / 5
 
+#ARMA_EACF
+ARMA_EACF_acc1 = accuracy(forecast(ARMA_EACF1, 8), test5)
+ARMA_EACF_acc2 = accuracy(forecast(ARMA_EACF2, 8), test5)
+ARMA_EACF_acc3 = accuracy(forecast(ARMA_EACF3, 8), test5)
+ARMA_EACF_acc4 = accuracy(forecast(ARMA_EACF4, 8), test5)
+ARMA_EACF_acc5 = accuracy(forecast(ARMA_EACF5, 8), test5)
+ARMA_EACF_acc_mean = ( ARMA_EACF_acc1[, "MAE"] + ARMA_EACF_acc2[, "MAE"] + ARMA_EACF_acc3[, "MAE"] + ARMA_EACF_acc4[, "MAE"] + ARMA_EACF_acc5[, "MAE"] ) / 5
+
 ar_acc_mean
 ma_acc_mean
 arma_acc_mean
 auto_arima_acc_mean
+ARMA_EACF_acc_mean
+
