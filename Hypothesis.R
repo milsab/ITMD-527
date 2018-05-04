@@ -82,15 +82,30 @@ c4= c(0.010882050,0.006333968, 0.003983154, 0.003983154, 0.003983154, 0.00398315
 c5= c(0.001892668,0.002735688, 0.002436760, 0.002436760, 0.002436760, 0.002436760, 0.002436760, 0.002436760)
 MA = c(c1, c2, c3, c4, c5)
 
-par(mfrow = c(1, 4))
-boxplot(ARMA, main="ARMA")
-boxplot(ARIMA, main="ARIMA")
-boxplot(MA, main="MA")
-boxplot(AR, main="AR")
+# ARMA_EACF Model
+e1= c(0.0003168238,0.0018991858, 0.0034504700, 0.0031641627, 0.03604642, 0.03603668, 0.03603849, 0.03603815)
+e2= c(0.012699856,0.009571119, 0.003591369, 0.003442003, 0.003438272, 0.003438179, 0.003438177, 0.003438177)
+e3= c(0.007982373,0.004813196, 0.003460457, 0.003460191, 0.003460191, 0.003460191, 0.003460191, 0.003460191)
+e4= c(0.011245961,0.006626490, 0.004120369, 0.003996189, 0.003990036, 0.003989731, 0.003989715, 0.003989715)
+e5= c(0.005737205,0.005549682, 0.005516794, 0.005484268, 0.005452099, 0.005420283, 0.005388816, 0.005357695)
+ARMA_EACF = c(e1, e2, e3, e4, e5)
+
+par(mfrow = c(1, 5))
+
+boxplot(AR, main="AR(7)")
+boxplot(MA, main="MA(2)")
+boxplot(ARMA, main="ARMA(7,2)")
+boxplot(ARIMA, main="ARMA(2,3)")
+boxplot(ARMA_EACF, main="ARMA(1,2)")
+
 t.test(ARMA, ARIMA, paired = T, alternative = "two.sided", mu = 0, conf.level = 0.95)
 t.test(ARMA, AR, paired = T, alternative = "two.sided", mu = 0, conf.level = 0.95)
 t.test(ARMA, MA, paired = T, alternative = "two.sided", mu = 0, conf.level = 0.95)
+t.test(ARMA, ARMA_EACF, paired = T, alternative = "two.sided", mu = 0, conf.level = 0.95)
 t.test(ARIMA, AR, paired = T, alternative = "two.sided", mu = 0, conf.level = 0.95)
 t.test(ARIMA, MA, paired = T, alternative = "two.sided", mu = 0, conf.level = 0.95)
+t.test(ARIMA, ARMA_EACF, paired = T, alternative = "two.sided", mu = 0, conf.level = 0.95)
 t.test(AR, MA, paired = T, alternative = "two.sided", mu = 0, conf.level = 0.95)
+t.test(AR, ARMA_EACF, paired = T, alternative = "two.sided", mu = 0, conf.level = 0.95)
+t.test(MA, ARMA_EACF, paired = T, alternative = "two.sided", mu = 0, conf.level = 0.95)
 

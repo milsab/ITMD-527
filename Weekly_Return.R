@@ -4,17 +4,23 @@ library(forecast)
 library(zoo)
 library(fbasic)
 
-# Buliding Weekly Data
+#Importing data
 
 bitc <- read.csv("bitc.csv", header = T)
 bitc_prices <- bitc["close"]
 price_ts <- zoo(bitc_prices, as.Date(as.character(bitc$date), format = "%m/%d/%Y"))
+plot(price_ts)
+acf(price_ts)
+
+# Buliding Weekly Data
+wdata_raw <- as.xts(price_ts)
 weeklyData_raw <- apply.weekly(as.xts(wdata_raw),FUN=mean)
 weeklyData_raw
 
 # Stationarity Test
 plot(weeklyData_raw)
-par(mfcol=c(2,1))
+
+par(mfcol=c(1,1))
 acf(weeklyData_raw, lag =15)
 pacf(weeklyData_raw, lag=15)
 
@@ -29,10 +35,19 @@ lines(xfit, yfit, col = "blue")
 Arima = auto.arima(coredata(weeklyData_raw))
 Arima
 
+#Residual Analysis
+names(Arima)
+plot(Arima$residuals, type = 'l')
+qqnorm(Arima$residuals)
+qqline(Arima$residuals, col = 2)
+acf(Arima$residuals)
+Box.test(Arima$residuals, lag=18, type = 'Ljung')
+
 #First Fold
 #Prtitioning
 weeklyData_raw_training_1 = weeklyData_raw[1:217]
 weeklyData_raw_test_1 = weeklyData_raw[218:225]
+
 weeklyData_raw_training_1
 weeklyData_raw_test_1
 
@@ -66,7 +81,10 @@ pr_arima_2
 
 #Evaluation
 accuracy(forecast(Arima_model_training_2),weeklyData_raw_test_2)
-forecast(Arima_model_training_2)
+forecast(Arima_model_training_2,8)
+
+
+
 
 #Third Fold
 #Prtitioning

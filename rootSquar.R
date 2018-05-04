@@ -3,12 +3,23 @@ library(tseries)
 library(fBasics)
 library(forecast)
 
+#Transformations
 # Make the Squar Root
 sqrt = sqrt(price)
 
 #Make Time-Series Object
-sqrt_ts = zoo(price_ret, as.Date(as.character(bitc$date), format = "%m/%d/%Y"))
+sqrt_ts = zoo(sqrt, as.Date(as.character(bitc$date), format = "%m/%d/%Y"))
 plot(sqrt_ts)
+
+#Make the Square
+sq_price = price * price
+sq_price_ts = zoo(sq_price, as.Date(as.character(bitc$date), format = "%m/%d/%Y"))
+plot(sq_price_ts)
+
+#diff transformation
+price_diff = diff(price)
+price_diff_ts = zoo(price_diff, as.Date(as.character(bitc$date), format = "%m/%d/%Y"))
+plot(price_diff_ts)
 
 #Augmented Dickey-Fuller Test for stationarity
 adf.test(sqrt_ts, alternative = "stationary")
