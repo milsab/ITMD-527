@@ -82,12 +82,18 @@ c4= c(0.010882050,0.006333968, 0.003983154, 0.003983154, 0.003983154, 0.00398315
 c5= c(0.001892668,0.002735688, 0.002436760, 0.002436760, 0.002436760, 0.002436760, 0.002436760, 0.002436760)
 MA = c(c1, c2, c3, c4, c5)
 
-par(mfrow = c(1, 4))
-boxplot(ARMA, main="ARMA")
-boxplot(ARIMA, main="ARIMA")
+par(mfrow = c(1, 2))
+boxplot(ARMA, main="ARMA(7,2)")
+boxplot(ARIMA, main="ARMA(2,3)")
 boxplot(MA, main="MA")
 boxplot(AR, main="AR")
-t.test(ARMA, ARIMA, paired = T, alternative = "two.sided", mu = 0, conf.level = 0.95)
+###
+ARMA_1 = ARMA
+ARMA_2 = ARIMA
+diff = ARMA_1 - ARMA_2
+z.test(diff, NULL, alternative = "two.sided", mu = 0, sigma.x=sd(diff), sigma.y=NULL, conf.level = 0.95)
+###
+z.test(ARMA, ARIMA, paired = T, alternative = "two.sided", mu = 0, conf.level = 0.95)
 t.test(ARMA, AR, paired = T, alternative = "two.sided", mu = 0, conf.level = 0.95)
 t.test(ARMA, MA, paired = T, alternative = "two.sided", mu = 0, conf.level = 0.95)
 t.test(ARIMA, AR, paired = T, alternative = "two.sided", mu = 0, conf.level = 0.95)
