@@ -82,6 +82,7 @@ c4= c(0.010882050,0.006333968, 0.003983154, 0.003983154, 0.003983154, 0.00398315
 c5= c(0.001892668,0.002735688, 0.002436760, 0.002436760, 0.002436760, 0.002436760, 0.002436760, 0.002436760)
 MA = c(c1, c2, c3, c4, c5)
 
+<<<<<<< HEAD
 # ARMA_EACF Model
 e1= c(0.0003168238,0.0018991858, 0.0034504700, 0.0031641627, 0.03604642, 0.03603668, 0.03603849, 0.03603815)
 e2= c(0.012699856,0.009571119, 0.003591369, 0.003442003, 0.003438272, 0.003438179, 0.003438177, 0.003438177)
@@ -99,6 +100,20 @@ boxplot(ARIMA, main="ARMA(2,3)")
 boxplot(ARMA_EACF, main="ARMA(1,2)")
 
 t.test(ARMA, ARIMA, paired = T, alternative = "two.sided", mu = 0, conf.level = 0.95)
+=======
+par(mfrow = c(1, 2))
+boxplot(ARMA, main="ARMA(7,2)")
+boxplot(ARIMA, main="ARMA(2,3)")
+boxplot(MA, main="MA")
+boxplot(AR, main="AR")
+###
+ARMA_1 = ARMA
+ARMA_2 = ARIMA
+diff = ARMA_1 - ARMA_2
+z.test(diff, NULL, alternative = "two.sided", mu = 0, sigma.x=sd(diff), sigma.y=NULL, conf.level = 0.95)
+###
+z.test(ARMA, ARIMA, paired = T, alternative = "two.sided", mu = 0, conf.level = 0.95)
+>>>>>>> 8884f0a97f59a943b97ea391f236fd2ac4bd5b23
 t.test(ARMA, AR, paired = T, alternative = "two.sided", mu = 0, conf.level = 0.95)
 t.test(ARMA, MA, paired = T, alternative = "two.sided", mu = 0, conf.level = 0.95)
 t.test(ARMA, ARMA_EACF, paired = T, alternative = "two.sided", mu = 0, conf.level = 0.95)
