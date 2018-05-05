@@ -9,7 +9,7 @@ library(fbasic)
 bitc <- read.csv("bitc.csv", header = T)
 bitc_prices <- bitc["close"]
 price_ts <- zoo(bitc_prices, as.Date(as.character(bitc$date), format = "%m/%d/%Y"))
-weeklyData_raw <- apply.weekly(as.xts(wdata_raw),FUN=mean)
+weeklyData_raw <- apply.weekly(as.xts(price_ts),FUN=mean)
 weeklyData_raw
 
 # Stationarity Test
@@ -28,6 +28,7 @@ lines(xfit, yfit, col = "blue")
 #Arima model
 Arima = auto.arima(coredata(weeklyData_raw))
 Arima
+
 
 #First Fold
 #Prtitioning

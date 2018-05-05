@@ -5,15 +5,24 @@ library(forecast)
 
 # Make the Squar Root
 sqrt = sqrt(price)
+sq = price^2
 
 #Make Time-Series Object
-sqrt_ts = zoo(price_ret, as.Date(as.character(bitc$date), format = "%m/%d/%Y"))
-plot(sqrt_ts)
+sqrt_ts = zoo(sqrt, as.Date(as.character(bitc$date), format = "%m/%d/%Y"))
+plot(sqrt_ts, xlab="", ylab="", main="Transformation: SQRT")
 
+sq_ts = zoo(sq, as.Date(as.character(bitc$date), format = "%m/%d/%Y"))
+plot(sq_ts, xlab="", ylab="", main="Transformation: SQURE")
 #Augmented Dickey-Fuller Test for stationarity
 adf.test(sqrt_ts, alternative = "stationary")
 
-par(mfcol=c(2,1))
+
+
+pricets = zoo(price, as.Date(as.character(bitc$date), format = "%m/%d/%Y"))
+dif = diff(pricets)
+plot(dif, xlab="", ylab="", main="Transformation: DIFFERENCING")
+
+par(mfcol=c(2,2))
 #Histogram
 hist(sqrt_ts, xlab = "Price", prob = TRUE, main = "Histogram")
 xfit = seq(min(sqrt_ts), max(sqrt_ts), length = 1793)

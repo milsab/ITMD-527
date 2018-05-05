@@ -1,6 +1,6 @@
 library(tseries)
-
-par(mfcol=c(2,1))
+library(fBasics)
+par(mfcol=c(1,1))
 
 # Buliding Return Model
 bitc = read.csv("Data\\bitc.csv", header = T, stringsAsFactors = F)
