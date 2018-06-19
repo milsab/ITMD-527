@@ -1,0 +1,4 @@
+# Import Data
+bitc_prices <- bitc["Close", drop = FALSE
+
+

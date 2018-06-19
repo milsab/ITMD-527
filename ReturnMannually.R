@@ -12,6 +12,7 @@ price_ret
 
 #Create Time-Series object and plot based on zoo function
 price_ret_zoo = zoo::zoo(price_ret, as.Date(as.character(bitc$date), format = "%m/%d/%Y"))
+price_ret_zoo 
 par(mfcol=c(1,1))
 plot(price_ret_zoo, xlab="", ylab="", main="Transformation: RETURN")
 

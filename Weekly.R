@@ -20,7 +20,7 @@ weeklyData_nonst = apply.weekly(as.xts(wdata_nonst),FUN=mean)
 #
 plot(weeklyData, xlab="", ylab="", main="Weekly ")
 plot(weeklyData_nonst)
-par(mfcol=c(2,1))
+par(mfcol=c(1,1))
 acf(weeklyData, lag=12)
 pacf(weeklyData, lag=12)
 
